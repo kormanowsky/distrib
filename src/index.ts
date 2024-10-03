@@ -57,8 +57,6 @@ export function distrib(items: number[], maxGroupsCount: number): number[][] {
             groupSums[minGroupSumIndex] += sortedItems[itemIndex];
         }
 
-        console.log(groupSums);
-
         let 
             minGroupSum = groupSums[0],
             maxGroupSum = groupSums[0];

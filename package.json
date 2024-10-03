@@ -1,7 +1,7 @@
 {
   "name": "@kormanowsky/distrib",
   "version": "0.0.2",
-  "description": "A function to distribute numbers or objects between groups",
+  "description": "Functions to distribute numbers or objects between groups",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
