@@ -2,7 +2,7 @@
 
 Functions to distribute numbers or objects between groups
 
-# Usage 
+## Usage 
 
 ```typescript 
 import {distrib, distribObjects} from '@kormanowsky/distrib';
