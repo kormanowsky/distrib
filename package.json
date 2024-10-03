@@ -1,7 +1,7 @@
 {
   "name": "@kormanowsky/distrib",
   "version": "0.0.1",
-  "description": "A function to distribute numbers between groups",
+  "description": "A function to distribute numbers or objects between groups",
   "main": "dist/index.js",
   "scripts": {
     "build": "npx tsc",

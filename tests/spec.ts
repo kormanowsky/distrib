@@ -1,4 +1,4 @@
-import { distrib } from "../src";
+import { distrib, distribObjects } from "../src";
 
 describe('distrib()', () => {
     test('groups 1 value into 1 group', () => {
@@ -18,5 +18,23 @@ describe('distrib()', () => {
 
     test('groups 1 big number, 1 medium and 4 small into 2 groups', () => {
         expect(distrib([5, 5, 5, 5, 10, 20], 3)).toEqual([[20, 5], [10, 5, 5, 5]]);
+    });
+});
+
+describe('distribObjects()', () => {
+    test('groups objects using getter function', () => {
+        const objects: Array<{weight: number}> = [];
+        for(let i = 0; i < 10; ++i) {
+            objects.push({weight: 10 * i + 1});
+        }
+
+        expect(
+            distribObjects(objects, (obj) => obj.weight, 4)
+        ).toEqual([
+            [{weight: 91}, {weight: 21}, {weight: 11}],
+            [{weight: 81}, {weight: 31}, {weight: 1}],
+            [{weight: 71}, {weight: 41}],
+            [{weight: 61}, {weight: 51}]
+        ]);
     });
 });

@@ -9,7 +9,7 @@ export function distrib(items: number[], maxGroupsCount: number): number[][] {
         sortedItems = [...items].sort((x, y) => y - x),
         totalSum = sortedItems.reduce((x, y) => x + y, 0);
 
-    // Calcuate actual groups count, given there is always a group with the sum S >= the maximum of the items
+    // Calcuate minimum needed groups count, given there is always a group with the sum S >= the maximum of the items
     // and if the total sum is much more than the maximum, also consider the second maximum, the third maximum ans so on.
     let 
         maximumIndex = 0,
@@ -21,6 +21,8 @@ export function distrib(items: number[], maxGroupsCount: number): number[][] {
         minGroupsCount = Math.floor(totalSum / approximateGroupSum);
     }
 
+    // Try to adjust the groups count, considering the diference between 
+    // minimum and maximum at first, and the maximum itself later. 
     let 
         resultGroups: number[][],
         storedMaxGroupSum: number = Infinity,
@@ -55,6 +57,8 @@ export function distrib(items: number[], maxGroupsCount: number): number[][] {
             groupSums[minGroupSumIndex] += sortedItems[itemIndex];
         }
 
+        console.log(groupSums);
+
         let 
             minGroupSum = groupSums[0],
             maxGroupSum = groupSums[0];
@@ -75,9 +79,17 @@ export function distrib(items: number[], maxGroupsCount: number): number[][] {
             storedGroupDifference = difference;
             resultGroups = groups;
         } else if (
-            Math.abs(difference - storedGroupDifference) < 1e-5 &&
-            maxGroupSum < storedMaxGroupSum
+            Math.abs(difference - storedGroupDifference) < 1e-5
         ) {
+            if (maxGroupSum < storedMaxGroupSum) {
+                storedMaxGroupSum = maxGroupSum;
+                resultGroups = groups;
+            }
+        } else if (
+            difference / storedGroupDifference - 1 < 
+            storedMaxGroupSum / maxGroupSum - 1
+        ) {
+            storedGroupDifference = difference;
             storedMaxGroupSum = maxGroupSum;
             resultGroups = groups;
         }
@@ -86,3 +98,35 @@ export function distrib(items: number[], maxGroupsCount: number): number[][] {
     // Return the result
     return resultGroups;
 } 
+
+export function distribObjects<T>(
+    objItems: T[], 
+    getObjNumber: (obj: T) => number,
+    maxGroupsCount: number
+): T[][] {
+    const objNumbers: number[] = [];
+
+    // Extract numbers from objects 
+    const numberToObjs = objItems.reduce<Record<number, T[]>>((acc, obj) => {
+        const objNumber = getObjNumber(obj);
+
+        objNumbers.push(objNumber);
+
+        if (!acc.hasOwnProperty(objNumber)) {
+            acc[objNumber] = [];
+        }
+
+        acc[objNumber].push(obj);
+
+        return acc;
+    }, {});
+
+    const groupedObjNumbers = distrib(objNumbers, maxGroupsCount);
+
+    // Restore objects based on grouped numbers
+    return groupedObjNumbers.map((group) => {
+        return group.map((objNumber) => {
+            return numberToObjs[objNumber].pop();
+        });
+    });
+}
