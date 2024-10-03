@@ -1,18 +1,19 @@
 {
   "name": "@mvk/distrib",
   "version": "0.0.1",
-  "description": "A simple function to distribute numbers between groups",
+  "description": "A function to distribute numbers between groups",
   "main": "dist/index.js",
   "scripts": {
     "build": "npx tsc",
     "test": "jest"
   },
-  "author": "",
+  "author": "Mikhail Kormanovskii <kormanowsky@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "@types/jest": "^29.5.13",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.2.5",
-    "typescript": "^5.6.2"
+    "@types/jest": "29.5.13",
+    "jest": "29.7.0",
+    "jest-junit": "16.0.0",
+    "ts-jest": "29.2.5",
+    "typescript": "5.6.2"
   }
 }
