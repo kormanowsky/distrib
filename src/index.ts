@@ -73,7 +73,11 @@ export function distrib(items: number[], maxGroupsCount: number): number[][] {
 
         const difference = maxGroupSum - minGroupSum;
 
-        if (difference < storedGroupDifference) {
+        if (resultGroups == null) {
+            storedGroupDifference = difference;
+            storedMaxGroupSum = maxGroupSum;
+            resultGroups = groups;
+        } else if (difference < storedGroupDifference) {
             storedGroupDifference = difference;
             resultGroups = groups;
         } else if (
