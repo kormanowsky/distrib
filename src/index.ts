@@ -14,42 +14,75 @@ export function distrib(items: number[], maxGroupsCount: number): number[][] {
     let 
         maximumIndex = 0,
         approximateGroupSum = sortedItems[maximumIndex],
-        groupsCount = Math.floor(totalSum / approximateGroupSum);
+        minGroupsCount = Math.floor(totalSum / approximateGroupSum);
 
-    while (groupsCount > maxGroupsCount) {
+    while (minGroupsCount > maxGroupsCount) {
         approximateGroupSum += sortedItems[++maximumIndex];
-        groupsCount = Math.floor(totalSum / approximateGroupSum);
+        minGroupsCount = Math.floor(totalSum / approximateGroupSum);
     }
 
-    console.log(groupsCount, maxGroupsCount);
+    let 
+        resultGroups: number[][],
+        storedMaxGroupSum: number = Infinity,
+        storedGroupDifference: number = Infinity;
 
-    // Initialize an array for the result and an extra array for sums
-    const 
-        groups = [],
-        groupSums = [];
-    
-    for(let i = 0; i < groupsCount; ++i) {
-        groups.push([]);
-        groupSums.push(0);
-    }
+    for(let groupsCount = minGroupsCount; groupsCount <= maxGroupsCount; ++groupsCount) {
 
-    // Put items into the groups, every time considering a group with least sum 
-    for(let itemIndex = 0; itemIndex < sortedItems.length; ++itemIndex) {
-        let 
-            minGroupSumIndex = 0, 
-            minGroupSum = groupSums[minGroupSumIndex];
+        // Initialize an array for the result and an extra array for sums
+        const 
+            groups = [],
+            groupSums = [];
         
-        for(let groupIndex = 1; groupIndex < groupsCount; ++groupIndex) {
-            if (groupSums[groupIndex] < minGroupSum) {
-                minGroupSum = groupSums[groupIndex];
-                minGroupSumIndex = groupIndex;
+        for(let i = 0; i < groupsCount; ++i) {
+            groups.push([]);
+            groupSums.push(0);
+        }
+
+        // Put items into the groups, every time considering a group with least sum 
+        for(let itemIndex = 0; itemIndex < sortedItems.length; ++itemIndex) {
+            let 
+                minGroupSumIndex = 0, 
+                minGroupSum = groupSums[minGroupSumIndex];
+            
+            for(let groupIndex = 1; groupIndex < groupsCount; ++groupIndex) {
+                if (groupSums[groupIndex] < minGroupSum) {
+                    minGroupSum = groupSums[groupIndex];
+                    minGroupSumIndex = groupIndex;
+                }
+            }
+
+            groups[minGroupSumIndex].push(sortedItems[itemIndex]);
+            groupSums[minGroupSumIndex] += sortedItems[itemIndex];
+        }
+
+        let 
+            minGroupSum = groupSums[0],
+            maxGroupSum = groupSums[0];
+
+        for(let i = 1; i < groupSums.length; ++i) {
+            if (groupSums[i] > maxGroupSum) {
+                maxGroupSum = groupSums[i];
+            }
+
+            if (groupSums[i] < minGroupSum) {
+                minGroupSum = groupSums[i];
             }
         }
 
-        groups[minGroupSumIndex].push(sortedItems[itemIndex]);
-        groupSums[minGroupSumIndex] += sortedItems[itemIndex];
+        const difference = maxGroupSum - minGroupSum;
+
+        if (difference < storedGroupDifference) {
+            storedGroupDifference = difference;
+            resultGroups = groups;
+        } else if (
+            Math.abs(difference - storedGroupDifference) < 1e-5 &&
+            maxGroupSum < storedMaxGroupSum
+        ) {
+            storedMaxGroupSum = maxGroupSum;
+            resultGroups = groups;
+        }
     }
 
     // Return the result
-    return groups;
+    return resultGroups;
 } 
