@@ -17,6 +17,6 @@ describe('distrib()', () => {
     });
 
     test('groups 1 big number, 1 medium and 4 small into 2 groups', () => {
-        expect(distrib([5, 5, 5, 5, 10, 20], 3)).toEqual([[20, 5], [10, 5, 5]]);
+        expect(distrib([5, 5, 5, 5, 10, 20], 3)).toEqual([[20, 5], [10, 5, 5, 5]]);
     });
 });
