@@ -99,6 +99,15 @@ export function distrib(items: number[], maxGroupsCount: number): number[][] {
     return resultGroups;
 } 
 
+/**
+ * Distributes given `objItems` into at most `maxGroupsCount` groups with probably near sum of
+ * their respective numeric values, using `getObjNumber` getter to obtain a number 
+ * corresponding to an object passed to the getter.
+ * 
+ * @param objItems 
+ * @param getObjNumber 
+ * @param maxGroupsCount 
+ */
 export function distribObjects<T>(
     objItems: T[], 
     getObjNumber: (obj: T) => number,
