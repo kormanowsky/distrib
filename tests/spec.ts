@@ -15,4 +15,8 @@ describe('distrib()', () => {
         )
             .toEqual([[1000, 0.06, 0.01], [700, 200, 100, 0.05, 0.02], [500, 500, 0.04, 0.03]]);
     });
+
+    test('groups 1 big number, 1 medium and 4 small into 2 groups', () => {
+        expect(distrib([5, 5, 5, 5, 10, 20], 3)).toEqual([[20, 5], [10, 5, 5]]);
+    });
 });
