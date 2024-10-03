@@ -5,8 +5,13 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "npx tsc",
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "npm run build"
   },
+  "files": [
+    "dist/*",
+    "package*.json"
+  ],
   "author": "Mikhail Kormanovskii <kormanowsky@gmail.com>",
   "license": "ISC",
   "devDependencies": {
